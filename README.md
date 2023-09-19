@@ -1,2 +1,2 @@
-# Fucking time tracking
+# Fucking Time Tracking
 why is there no free option
