@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "fucking time tracking",
+  "description": "can't believe this doesn't exist",
+  "version": "0.0.1",
+  "icons": {
+    "64": "icons/icon.png"
+  },
+  "background": {
+    "scripts": [
+      "background_script.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://github.com/*"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ],
+  "permissions": ["storage"],
+  "action": {
+    "default_icon": {
+      "64": "icons/icon.png"
+    },
+    "default_popup": "browserAction/index.html",
+    "default_title": "fucking time tracking"
+  }
+}
