@@ -9,16 +9,16 @@ if (sideBar !== null) {
 }
 
 function createSidebarTimeTracking(element) {
-    const dialog = "    <div id=\"ftt-dialog\">\n" +
-        "      <label for=\"ftt-date\">Day</label>\n" +
-        "      <input id=\"ftt-date\" type=\"date\"><br>\n" +
-        "      <label for=\"ftt-hours\">Hours</label>\n" +
-        "      <input id=\"ftt-hours\" type=\"number\" min=\"0\"><br>\n" +
-        "      <label for=\"ftt-minutes\">Min</label>\n" +
-        "      <input id=\"ftt-minutes\" type=\"number\" min=\"0\" max=\"59\"><br>\n" +
-        "      <button id=\"ftt-submit\">Submit</button>\n" +
-        "      <button id=\"ftt-history\">History</button>\n" +
-        "    </div>";
+    const dialog =   "    <div id=\"ftt-dialog\">\n" +
+                            "      <label for=\"ftt-date\">Day</label>\n" +
+                            "      <input id=\"ftt-date\" type=\"date\"><br>\n" +
+                            "      <label for=\"ftt-hours\">Hours</label>\n" +
+                            "      <input id=\"ftt-hours\" type=\"number\" min=\"0\"><br>\n" +
+                            "      <label for=\"ftt-minutes\">Min</label>\n" +
+                            "      <input id=\"ftt-minutes\" type=\"number\" min=\"0\" max=\"59\"><br>\n" +
+                            "      <button id=\"ftt-submit\">Submit</button>\n" +
+                            "      <button id=\"ftt-history\">History</button>\n" +
+                            "    </div>";
 
     element.parentNode.insertAdjacentHTML("afterbegin", dialog);
     document.getElementById("ftt-date").valueAsDate = new Date();
@@ -48,15 +48,18 @@ function getIssueTitle() {
     return elem.innerText;
 }
 
-function onSuccess() {
-    alert("success")
+function setupDb(request) {
+    request.onupgradeneeded = ev => {
+        const db = ev.target.result;
+        const objectStore = db.createObjectStore("timetracking", {keyPath: "issueId"});
+        objectStore.createIndex("issueId", "issueId", {unique: true});
+    }
 }
 
-function onFail() {
-    alert("failed")
-}
+function addToStorage() { // not tested
+    const request = window.indexedDB.open("timetrackingDb", 3);
+    setupDb(request);
 
-function addToStorage() { // not working yet
     let issueId = getIssueId();
     let getFromStorage = browser.storage.local.get(issueId);
     if (Object.keys(getFromStorage).length !== 0) {
